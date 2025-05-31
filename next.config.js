@@ -5,6 +5,11 @@ const nextConfig = {
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Stellar/Freighter için gerekli polyfills
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
+
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,

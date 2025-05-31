@@ -1,0 +1,52 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="giftGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="starGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#giftGradient)" opacity="0.1"/>
+  
+  <!-- Gift Box -->
+  <rect x="60" y="80" width="80" height="70" rx="8" fill="url(#giftGradient)" filter="url(#glow)"/>
+  
+  <!-- Gift Box Top -->
+  <rect x="55" y="75" width="90" height="15" rx="7" fill="url(#giftGradient)" opacity="0.8"/>
+  
+  <!-- Ribbon Vertical -->
+  <rect x="95" y="75" width="10" height="75" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Ribbon Horizontal -->
+  <rect x="55" y="110" width="90" height="8" fill="#ffffff" opacity="0.3"/>
+  
+  <!-- Bow -->
+  <ellipse cx="85" cy="70" rx="12" ry="8" fill="#ffffff" opacity="0.4"/>
+  <ellipse cx="115" cy="70" rx="12" ry="8" fill="#ffffff" opacity="0.4"/>
+  <circle cx="100" cy="70" r="6" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Stars around the gift -->
+  <g fill="url(#starGradient)" filter="url(#glow)">
+    <!-- Star 1 -->
+    <polygon points="40,50 42,58 50,58 44,62 46,70 40,66 34,70 36,62 30,58 38,58" opacity="0.8"/>
+    
+    <!-- Star 2 -->
+    <polygon points="160,45 161,50 166,50 162,53 163,58 160,55 157,58 158,53 154,50 159,50" opacity="0.9"/>
+    
+    <!-- Star 3 -->
+    <polygon points="170,120 171,125 176,125 172,128 173,133 170,130 167,133 168,128 164,125 169,125" opacity="0.9"/>
+  </g>
+</svg>

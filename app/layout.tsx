@@ -5,23 +5,23 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "GiftingStar - Stellar Hediye DApp",
+  title: "GiftingStar - Stellar Gift DApp",
   description:
-    "Özel günlerde sevdiklerinize otomatik hediye gönderin. Stellar blockchain ile güvenli ve zamanında teslimat.",
-  keywords: "stellar, blockchain, gift, hediye, crypto, soroban, dapp",
+    "Send automatic gifts on special occasions. Secure and timely delivery with Stellar blockchain.",
+  keywords: "stellar, blockchain, gift, crypto, soroban, dapp",
   authors: [{ name: "GiftingStar Team" }],
   viewport: "width=device-width, initial-scale=1",
   themeColor: "#ec4899",
   openGraph: {
-    title: "GiftingStar - Stellar Hediye DApp",
-    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin.",
+    title: "GiftingStar - Stellar Gift DApp",
+    description: "Send automatic gifts on special occasions.",
     type: "website",
     images: ["/og-image.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GiftingStar - Stellar Hediye DApp",
-    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin.",
+    title: "GiftingStar - Stellar Gift DApp",
+    description: "Send automatic gifts on special occasions.",
   },
 };
 
@@ -31,9 +31,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr">
+    <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />{" "}
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#ec4899" />
       </head>
