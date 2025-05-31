@@ -1,5 +1,8 @@
 # 🎁 GiftingStar - Stellar Soroban Gift DApp
 
+![GiftingStar Epic Hero](./epic-hero.png)
+
+## Who wouldn't want a gift from the future? 
 
 GiftingStar is a Web3 decentralized application (dApp) that allows you to schedule and send XLM gifts to your loved ones automatically on special occasions like birthdays, anniversaries, Valentine’s Day, and more. Built with **Stellar**, **Soroban**, and **Next.js**, this DApp brings together smart contracts and blockchain security with a sleek modern interface.
 
