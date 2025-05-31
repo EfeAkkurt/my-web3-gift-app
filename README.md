@@ -30,13 +30,13 @@ This project is a gift scheduling dApp built using Stellar and Soroban. It allow
 ├── tailwind.config.js    # Tailwind configuration
 ├── package.json          # Node.js dependencies
 └── README.md             # This documentation
-git clone https://github.com/yourusername/gifting-star-dapp.git
+git clone https://github.com/EfeAkkurt/.git
 
 🛠️ Setup
 
 1️⃣ Clone the repository:
 cd gifting-star-dapp
-git clone https://github.com/yourusername/gifting-star-dapp.git
+git clone https://github.com/yourusername/my-web3-gift-app.git
 cd gifting-star-dapp
 2️⃣ Install dependencies:
 npm install
@@ -50,13 +50,13 @@ rustup target add wasm32-unknown-unknown
 # Install Soroban CLI
 cargo install --locked soroban-cli
 
-4️⃣ Build the smart contract:
+4️⃣ # Build the smart contract:
 npm run build:contract
 
-5️⃣ Start the development server:
+5️⃣ # Start the development server:
 npm run dev
 
-⚙️ Usage
+⚙️ # Usage
 
 Frontend Usage
 
