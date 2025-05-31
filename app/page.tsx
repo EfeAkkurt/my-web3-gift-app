@@ -19,11 +19,11 @@ export default function GiftingApp() {
   const [showCreateForm, setShowCreateForm] = useState(false);
 
   // Form state
-  const [recipientAddress, setRecipientAddress] = useState("");
-  const [amount, setAmount] = useState("");
-  const [specialDay, setSpecialDay] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
+  const [recipientAddress, setRecipientAddress] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
+  const [specialDay, setSpecialDay] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   // Sayfa yüklendiğinde cüzdan bağlı mı kontrol et
   useEffect(() => {

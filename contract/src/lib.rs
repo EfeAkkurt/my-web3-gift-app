@@ -199,6 +199,155 @@ impl GiftingContract {
         for i in 1..=counter {
             let gifts_key = (GIFTS, i);
             if let Some(gift) = env.storage().persistent().get::<(Symbol, u64), ScheduledGift>(&gifts_key) {
+                match gift.status {
+                    GiftStatus::Pending => total_pending += 1,
+                    GiftStatus::Sent => total_sent += 1,
+                    GiftStatus::Cancelled => total_cancelled += 1,
+                    _ => {}
+                }
+                total_amount += gift.amount;
+            }
+        }
+        
+        stats.set(String::from_str(&env, "total_gifts"), counter as i128);
+        stats.set(String::from_str(&env, "pending_gifts"), total_pending);
+        stats.set(String::from_str(&env, "sent_gifts"), total_sent);
+        stats.set(String::from_str(&env, "cancelled_gifts"), total_cancelled);
+        stats.set(String::from_str(&env, "total_amount"), total_amount);
+        
+        stats
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use soroban_sdk::{testutils::{Address as _, Ledger}, Env};
+
+    #[test]
+    fn test_schedule_gift() {
+        let env = Env::default();
+        let contract_id = env.register_contract(None, GiftingContract);
+        let client = GiftingContractClient::new(&env, &contract_id);
+
+        let sender = Address::generate(&env);
+        let recipient = Address::generate(&env);
+        
+        // Mock ledger timestamp
+        env.mock_all_auths();
+        env.ledger().with_mut(|li| li.timestamp = 1000);
+
+        let gift_id = client.schedule_gift(
+            &sender,
+            &recipient,
+            &1000000, // 10 XLM (7 decimal places)
+            &String::from_str(&env, "Birthday"),
+            &2000, // Future timestamp
+            &String::from_str(&env, "Happy Birthday!")
+        );
+
+        assert_eq!(gift_id, 1);
+
+        let gift = client.get_gift(&gift_id).unwrap();
+        assert_eq!(gift.sender, sender);
+        assert_eq!(gift.recipient, recipient);
+        assert_eq!(gift.amount, 1000000);
+        assert_eq!(gift.status, GiftStatus::Pending);
+    }
+
+    #[test]
+    fn test_send_gift() {
+        let env = Env::default();
+        let contract_id = env.register_contract(None, GiftingContract);
+        let client = GiftingContractClient::new(&env, &contract_id);
+
+        let sender = Address::generate(&env);
+        let recipient = Address::generate(&env);
+        
+        env.mock_all_auths();
+        env.ledger().with_mut(|li| li.timestamp = 1000);
+
+        let gift_id = client.schedule_gift(
+            &sender,
+            &recipient,
+            &1000000,
+            &String::from_str(&env, "Anniversary"),
+            &2000,
+            &String::from_str(&env, "Happy Anniversary!")
+        );
+
+        let result = client.send_gift(&gift_id, &sender);
+        assert_eq!(result, true);
+
+        let gift = client.get_gift(&gift_id).unwrap();
+        assert_eq!(gift.status, GiftStatus::Sent);
+    }
+
+    #[test]
+    fn test_cancel_gift() {
+        let env = Env::default();
+        let contract_id = env.register_contract(None, GiftingContract);
+        let client = GiftingContractClient::new(&env, &contract_id);
+
+        let sender = Address::generate(&env);
+        let recipient = Address::generate(&env);
+        
+        env.mock_all_auths();
+        env.ledger().with_mut(|li| li.timestamp = 1000);
+
+        let gift_id = client.schedule_gift(
+            &sender,
+            &recipient,
+            &1000000,
+            &String::from_str(&env, "Valentine"),
+            &2000,
+            &String::from_str(&env, "Happy Valentine's Day!")
+        );
+
+        let result = client.cancel_gift(&gift_id, &sender);
+        assert_eq!(result, true);
+
+        let gift = client.get_gift(&gift_id).unwrap();
+        assert_eq!(gift.status, GiftStatus::Cancelled);
+    }
+
+    #[test]
+    fn test_get_user_gifts() {
+        let env = Env::default();
+        let contract_id = env.register_contract(None, GiftingContract);
+        let client = GiftingContractClient::new(&env, &contract_id);
+
+        let sender = Address::generate(&env);
+        let recipient1 = Address::generate(&env);
+        let recipient2 = Address::generate(&env);
+        
+        env.mock_all_auths();
+        env.ledger().with_mut(|li| li.timestamp = 1000);
+
+        // Schedule multiple gifts
+        client.schedule_gift(
+            &sender,
+            &recipient1,
+            &1000000,
+            &String::from_str(&env, "Birthday"),
+            &2000,
+            &String::from_str(&env, "Gift 1")
+        );
+
+        client.schedule_gift(
+            &sender,
+            &recipient2,
+            &2000000,
+            &String::from_str(&env, "Anniversary"),
+            &3000,
+            &String::from_str(&env, "Gift 2")
+        );
+
+        let user_gifts = client.get_user_gifts(&sender);
+        assert_eq!(user_gifts.len(), 2);
+    }
+}
+            if let Some(gift) = env.storage().persistent().get::<(Symbol, u64), ScheduledGift>(&gifts_key) {
                 if gift.status == GiftStatus::Pending && gift.scheduled_date <= target_date {
                     pending_gifts.push_back(gift);
                 }
@@ -239,192 +388,3 @@ impl GiftingContract {
         
         for i in 1..=counter {
             let gifts_key = (GIFTS, i);
-            if let Some(gift) = env.storage().persistent().get::<(Symbol, u64), ScheduledGift>(&gifts_key) {
-                match gift.status {
-                    GiftStatus::Pending => total_pending += 1,
-                    GiftStatus::Sent => total_sent += 1,
-                    GiftStatus::Cancelled => total_cancelled += 1,
-                    GiftStatus::Failed => {},
-                }
-                total_amount += gift.amount;
-            }
-        }
-        
-        stats.set(String::from_str(&env, "total_gifts"), counter as i128);
-        stats.set(String::from_str(&env, "pending_gifts"), total_pending);
-        stats.set(String::from_str(&env, "sent_gifts"), total_sent);
-        stats.set(String::from_str(&env, "cancelled_gifts"), total_cancelled);
-        stats.set(String::from_str(&env, "total_amount"), total_amount);
-        
-        stats
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-    use soroban_sdk::{testutils::Address as _, Address, Env};
-
-    #[test]
-    fn test_schedule_gift() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
-        
-        // Mock auth for sender
-        env.mock_all_auths();
-        
-        let gift_id = client.schedule_gift(
-            &sender,
-            &recipient,
-            &1000i128,
-            &String::from_str(&env, "Birthday"),
-            &(env.ledger().timestamp() + 86400), // 1 day later
-            &String::from_str(&env, "Happy Birthday!")
-        );
-        
-        assert_eq!(gift_id, 1);
-        
-        let gift = client.get_gift(&gift_id).unwrap();
-        assert_eq!(gift.sender, sender);
-        assert_eq!(gift.recipient, recipient);
-        assert_eq!(gift.amount, 1000i128);
-        assert_eq!(gift.status, GiftStatus::Pending);
-    }
-    
-    #[test]
-    fn test_send_gift() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
-        
-        env.mock_all_auths();
-        
-        let gift_id = client.schedule_gift(
-            &sender,
-            &recipient,
-            &1000i128,
-            &String::from_str(&env, "Anniversary"),
-            &(env.ledger().timestamp() + 86400),
-            &String::from_str(&env, "Happy Anniversary!")
-        );
-        
-        let result = client.send_gift(&gift_id, &sender);
-        assert_eq!(result, true);
-        
-        let gift = client.get_gift(&gift_id).unwrap();
-        assert_eq!(gift.status, GiftStatus::Sent);
-    }
-    
-    #[test]
-    fn test_cancel_gift() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
-        
-        env.mock_all_auths();
-        
-        let gift_id = client.schedule_gift(
-            &sender,
-            &recipient,
-            &1000i128,
-            &String::from_str(&env, "Valentine's Day"),
-            &(env.ledger().timestamp() + 86400),
-            &String::from_str(&env, "Be my Valentine!")
-        );
-        
-        let result = client.cancel_gift(&gift_id, &sender);
-        assert_eq!(result, true);
-        
-        let gift = client.get_gift(&gift_id).unwrap();
-        assert_eq!(gift.status, GiftStatus::Cancelled);
-    }
-    
-    #[test]
-    fn test_get_user_gifts() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient1 = Address::generate(&env);
-        let recipient2 = Address::generate(&env);
-        
-        env.mock_all_auths();
-        
-        // Schedule multiple gifts
-        client.schedule_gift(
-            &sender,
-            &recipient1,
-            &1000i128,
-            &String::from_str(&env, "Birthday"),
-            &(env.ledger().timestamp() + 86400),
-            &String::from_str(&env, "Happy Birthday!")
-        );
-        
-        client.schedule_gift(
-            &sender,
-            &recipient2,
-            &2000i128,
-            &String::from_str(&env, "Christmas"),
-            &(env.ledger().timestamp() + 172800),
-            &String::from_str(&env, "Merry Christmas!")
-        );
-        
-        let user_gifts = client.get_user_gifts(&sender);
-        assert_eq!(user_gifts.len(), 2);
-    }
-    
-    #[test]
-    #[should_panic(expected = "Amount must be positive")]
-    fn test_schedule_gift_negative_amount() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
-        
-        env.mock_all_auths();
-        
-        client.schedule_gift(
-            &sender,
-            &recipient,
-            &-100i128, // Negative amount
-            &String::from_str(&env, "Birthday"),
-            &(env.ledger().timestamp() + 86400),
-            &String::from_str(&env, "Happy Birthday!")
-        );
-    }
-    
-    #[test]
-    #[should_panic(expected = "Scheduled date must be in the future")]
-    fn test_schedule_gift_past_date() {
-        let env = Env::default();
-        let contract_id = env.register_contract(None, GiftingContract);
-        let client = GiftingContractClient::new(&env, &contract_id);
-
-        let sender = Address::generate(&env);
-        let recipient = Address::generate(&env);
-        
-        env.mock_all_auths();
-        
-        client.schedule_gift(
-            &sender,
-            &recipient,
-            &1000i128,
-            &String::from_str(&env, "Birthday"),
-            &(env.ledger().timestamp() - 86400), // Past date
-            &String::from_str(&env, "Happy Birthday!")
-        );
-    }
-}

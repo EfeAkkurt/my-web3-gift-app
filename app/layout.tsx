@@ -1,29 +1,28 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "GiftingStar - Stellar Hediye DApp",
   description:
-    "Stellar blockchain üzerinde özel günlerde otomatik hediye gönderme uygulaması",
-  keywords: ["stellar", "soroban", "blockchain", "hediye", "dapp", "crypto"],
+    "Özel günlerde sevdiklerinize otomatik hediye gönderin. Stellar blockchain ile güvenli ve zamanında teslimat.",
+  keywords: "stellar, blockchain, gift, hediye, crypto, soroban, dapp",
   authors: [{ name: "GiftingStar Team" }],
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: "#ec4899",
   openGraph: {
     title: "GiftingStar - Stellar Hediye DApp",
-    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin",
+    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin.",
     type: "website",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "GiftingStar - Stellar Hediye DApp",
-    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin",
-    images: ["/og-image.png"],
+    description: "Özel günlerde sevdiklerinize otomatik hediye gönderin.",
   },
-  viewport: "width=device-width, initial-scale=1",
-  robots: "index, follow",
 };
 
 export default function RootLayout({
@@ -39,9 +38,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#ec4899" />
       </head>
       <body className={`${inter.className} antialiased`}>
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-          {children}
-        </div>
+        <div className="min-h-screen">{children}</div>
       </body>
     </html>
   );
