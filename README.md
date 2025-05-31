@@ -18,7 +18,8 @@ This project is a gift scheduling dApp built using Stellar and Soroban. It allow
 ⸻
 
 📂 Project Structure
-/
+
+/my-web3-gift-app
 ├── contract/             # Rust/Soroban smart contract code
 │   ├── src/
 │   │   └── lib.rs        # Main contract logic
@@ -35,11 +36,12 @@ git clone https://github.com/EfeAkkurt/.git
 🛠️ Setup
 
 1️⃣ Clone the repository:
-cd gifting-star-dapp
-git clone https://github.com/yourusername/my-web3-gift-app.git
-cd gifting-star-dapp
+git clone https://github.com/EfeAkkurt/my-web3-gift-app.git
+cd my-web3-gift-app
+
 2️⃣ Install dependencies:
 npm install
+
 3️⃣ Install Rust and Soroban CLI:
 # Rust installation
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
