@@ -1,4 +1,4 @@
-# 🎁 GiftingStar - Stellar Soroban Gift DApp
+# 🎁 GiftingStar - Gift DApp
 
 ![GiftingStar Epic Hero](./epic-hero.png)
 
