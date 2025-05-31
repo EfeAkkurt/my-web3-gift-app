@@ -1,80 +1,94 @@
-🎁 GiftingStar - Stellar Soroban Gift DApp
+# 🎁 GiftingStar - Stellar Soroban Gift DApp
 
-This project is a gift scheduling dApp built using Stellar and Soroban. It allows you to automatically send gifts to your loved ones on special occasions.
+![GiftingStar Banner](./giftingstar_banner.png)
 
-⸻
+GiftingStar is a Web3 decentralized application (dApp) that allows you to schedule and send XLM gifts to your loved ones automatically on special occasions like birthdays, anniversaries, Valentine’s Day, and more. Built with **Stellar**, **Soroban**, and **Next.js**, this DApp brings together smart contracts and blockchain security with a sleek modern interface.
 
-🚀 Features
-	•	🌐 Modern interface built with Next.js
-	•	📜 Smart contracts written in Rust / Soroban
-	•	🔑 Cargo integration
-	•	🎯 Gift scheduling for special occasions
-	•	📅 Support for anniversaries, Valentine’s Day, birthdays, and more
-	•	💰 Send XLM token gifts
-	•	🎨 Stylish and user-friendly UI (built with Tailwind CSS)
-	•	🔒 Blockchain-level security
-	•	⏰ Automatic gift delivery
+---
 
-⸻
+## 📚 Table of Contents
 
-📂 Project Structure
+- [Features](#-features)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Usage](#️-usage)
+- [Smart Contract Functions](#-smart-contract-functions)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Development](#-development)
+- [Supported Special Days](#-supported-special-days)
+- [Security](#-security)
+- [Contributors](#-contributors)
+- [License](#-license)
 
-/my-web3-gift-app
-├── contract/             # Rust/Soroban smart contract code
+---
+
+## 🚀 Features
+
+- 🌐 Modern interface built with Next.js
+- 📜 Smart contracts written in Rust using Soroban
+- 🔑 Cargo and Soroban CLI integration
+- 🎯 Gift scheduling for specific occasions
+- 📅 Support for birthdays, Valentine’s Day, anniversaries, and more
+- 💰 Send XLM token gifts
+- 🎨 Built with Tailwind CSS for sleek UI
+- 🔒 Blockchain-level security and validations
+- ⏰ Automatic gift delivery
+
+---
+
+## 📂 Project Structure
+my-web3-gift-app/
+├── contract/             # Rust/Soroban smart contract
 │   ├── src/
 │   │   └── lib.rs        # Main contract logic
 │   └── Cargo.toml        # Rust dependencies
-├── app/                  # Next.js frontend app
-│   ├── page.tsx          # Main page
-│   ├── layout.tsx        # Layout component
-│   └── globals.css       # Global styles
-├── tailwind.config.js    # Tailwind configuration
-├── package.json          # Node.js dependencies
-└── README.md             # This documentation
-git clone https://github.com/EfeAkkurt/.git
+├── app/                  # Next.js frontend
+│   ├── page.tsx
+│   ├── layout.tsx
+│   └── globals.css
+├── tailwind.config.js
+├── package.json
+└── README.md
 
-🛠️ Setup
+---
 
-1️⃣ Clone the repository:
+## 🛠️ Installation
+
+1️⃣ **Clone the repository**:
+```bash
 git clone https://github.com/EfeAkkurt/my-web3-gift-app.git
 cd my-web3-gift-app
 
-2️⃣ Install dependencies:
+2️⃣ Install frontend dependencies:
 npm install
 
 3️⃣ Install Rust and Soroban CLI:
-# Rust installation
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# Add WebAssembly target
 rustup target add wasm32-unknown-unknown
-
-# Install Soroban CLI
 cargo install --locked soroban-cli
 
-4️⃣ # Build the smart contract:
+4️⃣ Build the smart contract:
 npm run build:contract
 
-5️⃣ # Start the development server:
+5️⃣ Start the development server:
 npm run dev
 
-⚙️ # Usage
+⚙️ Usage
 
-Frontend Usage
-
-Connect Wallet: Click the “Connect Freighter Wallet” button on the homepage.
-Schedule Gift:
-	•	Click “New Gift Schedule”
-	•	Enter recipient address
-	•	Define the XLM amount to send
-	•	Select a special day (Anniversary, Valentine’s Day, etc.)
-	•	Choose a send date
-	•	Optionally add a message
-Gift Management: View and manage your scheduled gifts.
+Frontend Interaction
+	1.	Connect Wallet: Click “Connect Freighter Wallet”
+	2.	Schedule a Gift:
+	•	Choose “New Gift Schedule”
+	•	Enter recipient’s wallet address
+	•	Select XLM amount
+	•	Pick a special occasion and delivery date
+	•	(Optional) Add a message
+	3.	Manage Gifts: View, send, or cancel scheduled gifts
 
 ⸻
 
-Smart Contract Functions
+📜 Smart Contract Functions
 // Schedule a gift
 schedule_gift(sender, recipient, amount, special_day, date, description)
 
@@ -92,32 +106,27 @@ get_gift(gift_id)
 
 🧪 Testing
 
-Contract Tests
+Run contract tests:
 npm run test:contract
 
-TypeScript Type Checking
+Check TypeScript types:
 npm run type-check
 
 🚀 Deployment
 
-Testnet Deployment
-# Deploy contract to testnet
+Testnet
 npm run deploy:testnet
+npm run build  # For frontend (e.g., Vercel)
 
-# Deploy frontend (example: Vercel)
-npm run build
-
-Mainnet Deployment
-# Update the contract ID
+Mainnet
 soroban contract deploy --wasm contract/target/wasm32-unknown-unknown/release/gifting_contract.wasm --source-account default --network mainnet
 
-# Update frontend environment variables accordingly
-
 🔧 Development
-
-Code Formatting
+Format code:
 npm run format
 npm run format:check
+
+Lint:
 npm run lint
 
 📱 Supported Special Days
@@ -130,12 +139,26 @@ npm run lint
 	•	🎓 Graduation
 	•	⭐ Custom Occasion
 
+ 🛡️ Security
+	•	✅ Freighter wallet integration
+	•	✅ Smart contract level authorization
+	•	✅ Address, amount, and date validation
+	•	✅ Secure gift scheduling and delivery logic
+
 ⸻
 
-🛡️ Security
-	•	✅ Freighter wallet integration
-	•	✅ Secure Soroban smart contracts
-	•	✅ Address validation
-	•	✅ Amount validation
-	•	✅ Date validation
-	•	✅ Authorization checks
+👨‍💻 Contributors
+	•	@EfeAkkurt – Creator and Lead Developer
+
+⸻
+
+📄 License
+
+This project is licensed under the MIT License.
+
+⸻
+
+💡 A heartfelt way to automate generosity — powered by blockchain.
+---
+
+Let me know if you'd like the README exported as a file or need additional assets like icons or documentation pages. |oai:code-citation|
